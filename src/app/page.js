@@ -1,8 +1,8 @@
-// async function Timeout() {
-//   await new Promise((resvole) => {
-//     setTimeout(resvole, 3000);
-//   });
-// }
+async function Timeout() {
+  await new Promise((resvole) => {
+    setTimeout(resvole, 3000);
+  });
+}
 
 export default async function Home() {
   // await Timeout();
