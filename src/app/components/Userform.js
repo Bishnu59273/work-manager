@@ -13,7 +13,7 @@ const UserForm = () => {
     setSuccess(null);
 
     try {
-      const response = await fetch("/api/users", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -28,11 +28,11 @@ const UserForm = () => {
       }
 
       const result = await response.json();
-      setSuccess(`User created with ID: ${result.insertedId}`);
+      setSuccess(`Message Sent`);
       setName("");
       setMessage("");
     } catch (err) {
-      console.error("Error during form submission:", err);
+      console.error("Error during message submission:", err);
       setError(err.message);
     }
   };

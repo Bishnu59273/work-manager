@@ -98,7 +98,7 @@ export async function POST(request) {
     const db = client.db("work");
     const usersCollection = db.collection("users");
 
-    const { username, email, password } = await request.json();
+    const { name, message } = await request.json();
 
     // Get the next sequence value for user IDs
     // const nextId = await getNextSequenceValue("userId");
@@ -106,9 +106,8 @@ export async function POST(request) {
     // Prepare new user data
     const newUser = {
       // _id: nextId,
-      username,
-      email,
-      password,
+      name,
+      message,
       createdAt: new Date(),
     };
 
@@ -128,11 +127,4 @@ export async function POST(request) {
   } finally {
     await client.close();
   }
-}
-
-export function DELETE() {
-  console.log("DELETE api called");
-  return NextResponse.json({
-    message: "testing DELETE",
-  });
 }

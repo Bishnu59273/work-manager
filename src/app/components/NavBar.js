@@ -1,9 +1,10 @@
 import Link from "next/link";
+import "../style/style.css";
 
 export default function NavBar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
+    <nav className="navbar navbar-expand-lg">
+      <div className="container">
         <Link className="navbar-brand" href="/">
           WrokManager
         </Link>
@@ -19,7 +20,7 @@ export default function NavBar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav mb-2 mb-lg-0 w-100">
             <li className="nav-item">
               <Link className="nav-link active" aria-current="page" href="/">
                 Home
@@ -33,6 +34,18 @@ export default function NavBar() {
             <li className="nav-item">
               <Link className="nav-link" href="/contact">
                 Contact Us
+              </Link>
+            </li>
+          </ul>
+          <ul className="navbar-nav mb-2 mb-lg-0 login">
+            <li className="nav-item">
+              <Link className="nav-link" href="/login">
+                Login
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/register">
+                Register
               </Link>
             </li>
           </ul>

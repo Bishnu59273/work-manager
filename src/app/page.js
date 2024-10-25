@@ -1,5 +1,3 @@
-import UserForm from "./components/Userform";
-
 async function Timeout() {
   await new Promise((resvole) => {
     setTimeout(resvole, 3000);
@@ -9,9 +7,8 @@ async function Timeout() {
 export default async function Home() {
   // await Timeout();
   return (
-    <div className="container text-center m-5">
-      <h1>Send details</h1>
-      <UserForm />
+    <div className="container text-center">
+      <h2>indexx</h2>
     </div>
   );
 }
