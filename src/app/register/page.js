@@ -14,7 +14,7 @@ export default function Register() {
     setError(null);
     setSuccess(null);
     try {
-      const response = await fetch("/api/users", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export default function Register() {
       }
 
       const result = await response.json();
-      setSuccess(`successfully register with ID: ${result.insertedId}`);
+      setSuccess(`Successfully register with ID: ${result.insertedId}`);
       setUsername("");
       setEmail("");
       setPassword("");
@@ -40,28 +40,63 @@ export default function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Register</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-    </form>
+    <>
+      <div className="container text-center m-5 d-flex justify-content-center">
+        <form onSubmit={handleSubmit} className="w-50">
+          <div className="row mb-3">
+            <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
+              Username
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="text"
+                className="form-control"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="row mb-3">
+            <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
+              Email
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="email"
+                className="form-control"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="row mb-3">
+            <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">
+              Password
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="password"
+                className="form-control"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Register
+          </button>
+          {error && (
+            <p className="mt-2" style={{ color: "red" }}>
+              {error}
+            </p>
+          )}
+          {success && (
+            <p className="mt-2" style={{ color: "green" }}>
+              {success}
+            </p>
+          )}
+        </form>
+      </div>
+    </>
   );
 }

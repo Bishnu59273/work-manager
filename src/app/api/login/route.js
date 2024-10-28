@@ -1,32 +1,85 @@
-// pages/api/login.js
-
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../../models/User";
-import dbConnect from "@/helpers/db";
+import { MongoClient } from "mongodb";
 
-export default async function handler(req, res) {
-  await dbConnect();
+const uri = process.env.MONGO_DB_URL;
+const key = process.env.JWT_SECRET;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-  const { email, password } = req.body;
+let db;
 
-  // Find user by email
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(400).json({ error: "Invalid email or password" });
+async function connectToDatabase() {
+  if (!db) {
+    await client.connect();
+    db = client.db("work");
   }
+  return db;
+}
 
-  // Check if password is correct
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    return res.status(400).json({ error: "Invalid email or password" });
+export async function POST(request) {
+  try {
+    const database = await connectToDatabase();
+
+    // Parse request body
+    const { email, password } = await request.json();
+
+    if (!email || !password) {
+      return new Response(
+        JSON.stringify({ error: "Email and password are required" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Find user by email
+    const user = await database.collection("users").findOne({ email });
+
+    if (!user) {
+      console.log("User not found");
+      return new Response(
+        JSON.stringify({ error: "Invalid email or password" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    console.log("Received email:", email);
+
+    // Check if password is correct
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      console.log("Password is invalid");
+      return new Response(
+        JSON.stringify({ error: "Invalid email or password" }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Create JWT token
+    const token = jwt.sign(
+      {
+        userId: user._id.toString(),
+        username: user.username,
+        email: user.email,
+      },
+      key,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    console.log("Token generated:", token);
+
+    return new Response(JSON.stringify({ token }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Internal server error:", error.message);
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
-
-  // Create JWT token
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
-  });
-
-  // Return token
-  res.status(200).json({ token });
 }
