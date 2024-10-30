@@ -1,8 +1,31 @@
 import { NextResponse } from "next/server";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 
 const uri = process.env.MONGO_DB_URL;
+
+async function getNextSequenceValue(sequenceName) {
+  const client = new MongoClient(uri);
+
+  try {
+    await client.connect();
+    const db = client.db("work");
+    const sequenceDocument = await db
+      .collection("counters")
+      .findOneAndUpdate(
+        { _id: sequenceName },
+        { $inc: { sequence_value: 1 } },
+        { returnDocument: "after", upsert: true }
+      );
+
+    return sequenceDocument.sequence_value;
+  } catch (error) {
+    console.error("Error in getNextSequenceValue:", error);
+    throw new Error("Failed to get the next sequence value");
+  } finally {
+    await client.close();
+  }
+}
 
 export async function POST(request) {
   const client = new MongoClient(uri);
@@ -12,14 +35,19 @@ export async function POST(request) {
     const db = client.db("work");
     const usersCollection = db.collection("users");
 
-    const { username, email, password } = await request.json();
+    const { username, email, password, role } = await request.json();
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Prepare new user data
+
+    const userId = await getNextSequenceValue("userid");
+    const objectId = new ObjectId(userId);
     const newUser = {
+      _id: objectId,
+      uniqueId: userId,
       username,
       email,
       password: hashedPassword,
+      role,
       createdAt: new Date(),
     };
 

@@ -24,7 +24,7 @@ export async function POST(request) {
     const database = await connectToDatabase();
 
     // Parse request body
-    const { email, password } = await request.json();
+    const { email, password, role } = await request.json();
 
     if (!email || !password) {
       return new Response(
@@ -37,22 +37,26 @@ export async function POST(request) {
     const user = await database.collection("users").findOne({ email });
 
     if (!user) {
-      console.log("User not found");
       return new Response(
         JSON.stringify({ error: "Invalid email or password" }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    console.log("Received email:", email);
-
     // Check if password is correct
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      console.log("Password is invalid");
       return new Response(
         JSON.stringify({ error: "Invalid email or password" }),
         { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Check if the selected role matches the user's role in the database
+    if (user.role !== role) {
+      return new Response(
+        JSON.stringify({ error: "Invalid role for this user" }),
+        { status: 403, headers: { "Content-Type": "application/json" } }
       );
     }
 
@@ -60,6 +64,7 @@ export async function POST(request) {
     const token = jwt.sign(
       {
         userId: user._id.toString(),
+        role: user.role,
         username: user.username,
         email: user.email,
       },

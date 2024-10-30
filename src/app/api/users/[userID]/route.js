@@ -12,14 +12,11 @@ export async function GET(request, { params }) {
     const db = client.db("work");
     const usersCollection = db.collection("users");
 
-    const { userID } = params;
+    const userID = parseInt(params.userID);
 
-    if (!ObjectId.isValid(userID)) {
-      return NextResponse.json({ error: "Invalid User ID" }, { status: 400 });
-    }
-
-    // Find the user by their _id
-    const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
+    const user = await usersCollection.findOne({
+      uniqueId: userID,
+    });
 
     // If no user is found, return a 404 error
     if (!user) {

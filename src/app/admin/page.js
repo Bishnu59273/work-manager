@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const Dashboard = () => {
+const Admin = () => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -15,10 +15,10 @@ const Dashboard = () => {
     const email = localStorage.getItem("email");
     const role = localStorage.getItem("role");
 
-    if (username && email) {
+    if (username && email && role) {
       setUserInfo({ username, email, role });
     } else {
-      router.push("/");
+      router.push("/"); // Redirect to index page if not logged in
     }
   }, [router]);
 
@@ -29,13 +29,12 @@ const Dashboard = () => {
     localStorage.removeItem("role");
     router.push("/");
   };
-
   return (
     <div className="container text-center m-5">
-      <h1>User Dashboard</h1>
+      <h1>Admin Dashboard</h1>
       <h2>Welcome, {userInfo.username}!</h2>
       <p>Your email: {userInfo.email}</p>
-      <p>Your role: {userInfo.role}</p>
+      <p>Your Role: {userInfo.role}</p>
       <button className="btn btn-primary" onClick={handleLogout}>
         Logout
       </button>
@@ -43,4 +42,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Admin;

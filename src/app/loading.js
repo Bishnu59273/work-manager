@@ -1,7 +1,9 @@
 export default function MainLoading() {
   return (
-    <div className="text-center m-5">
-      <p>Loading...</p>
+    <div className="d-flex justify-content-center m-5">
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
     </div>
   );
 }

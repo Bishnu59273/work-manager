@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const Dashboard = () => {
+const Radiologist = () => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -29,13 +29,12 @@ const Dashboard = () => {
     localStorage.removeItem("role");
     router.push("/");
   };
-
   return (
     <div className="container text-center m-5">
-      <h1>User Dashboard</h1>
+      <h1>Radiology Dashboard</h1>
       <h2>Welcome, {userInfo.username}!</h2>
       <p>Your email: {userInfo.email}</p>
-      <p>Your role: {userInfo.role}</p>
+      <p>Your Role: {userInfo.role}</p>
       <button className="btn btn-primary" onClick={handleLogout}>
         Logout
       </button>
@@ -43,4 +42,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Radiologist;

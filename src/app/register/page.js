@@ -1,11 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("normal_user");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -19,7 +20,7 @@ export default function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, role }),
       });
 
       if (!response.ok) {
@@ -66,6 +67,7 @@ export default function Register() {
                 className="form-control"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
           </div>
@@ -79,7 +81,26 @@ export default function Register() {
                 className="form-control"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
+            </div>
+          </div>
+          <div className="row mb-3">
+            <label htmlFor="inputRole" className="col-sm-2 col-form-label role">
+              Select Role
+            </label>
+            <div className="col-sm-10">
+              <select
+                className="form-select"
+                aria-label="Default select example"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              >
+                <option value="normal_user">Normal User</option>
+                <option value="radiologist">Radiologist</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
           </div>
           <button type="submit" className="btn btn-primary">
