@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ConnectDB } from "@/helpers/db";
+// import { ConnectDB } from "@/helpers/db";
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGO_DB_URL;
@@ -12,16 +12,22 @@ export async function GET(request) {
 
     const users = await usersCollection.find({}).toArray();
 
-    return new Response(JSON.stringify(users), {
+    return new NextResponse(JSON.stringify(users), {
       status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   } catch (error) {
     console.error("Failed to fetch user data:", error);
 
-    return new Response(
+    return new NextResponse(
       JSON.stringify({ error: "Failed to fetch user data" }),
       {
         status: 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
   } finally {

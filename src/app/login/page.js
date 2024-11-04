@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("normal_user");
   const [error, setError] = useState(null);
   const router = useRouter();
 
@@ -34,16 +34,25 @@ export default function Login() {
         localStorage.setItem("email", decodedToken.email);
         localStorage.setItem("role", decodedToken.role);
 
+        router.push("/dashboard");
+        // useEffect(() => {
+        //   if (role) {
+        //     router.push("/dashboard").then(() => {
+        //       console.log("Navigated to /dashboard");
+        //     });
+        //   }
+        // }, [role]);
+
         // Redirect based on the user role
-        if (decodedToken.role === "admin") {
-          router.push("/admin");
-        } else if (decodedToken.role === "radiologist") {
-          router.push("/radiologist");
-        } else if (decodedToken.role === "normal_user") {
-          router.push("/dashboard");
-        } else {
-          router.push("/");
-        }
+        // if (decodedToken.role === "admin") {
+        //   router.push("/admin");
+        // } else if (decodedToken.role === "radiologist") {
+        //   router.push("/radiologist");
+        // } else if (decodedToken.role === "normal_user") {
+        //   router.push("/dashboard");
+        // } else {
+        //   router.push("/");
+        // }
       } else {
         setError("Login failed: No token returned.");
       }
