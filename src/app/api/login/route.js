@@ -10,7 +10,6 @@ const client = new MongoClient(uri, {
 });
 
 let db;
-
 async function connectToDatabase() {
   if (!db) {
     await client.connect();
@@ -22,10 +21,7 @@ async function connectToDatabase() {
 export async function POST(request) {
   try {
     const database = await connectToDatabase();
-
-    // Parse request body
     const { email, password, role } = await request.json();
-
     if (!email || !password) {
       return new Response(
         JSON.stringify({ error: "Email and password are required" }),
@@ -33,9 +29,7 @@ export async function POST(request) {
       );
     }
 
-    // Find user by email
     const user = await database.collection("users").findOne({ email });
-
     if (!user) {
       return new Response(
         JSON.stringify({ error: "Invalid email or password" }),
@@ -43,7 +37,6 @@ export async function POST(request) {
       );
     }
 
-    // Check if password is correct
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return new Response(
@@ -52,7 +45,6 @@ export async function POST(request) {
       );
     }
 
-    // Check if the selected role matches the user's role in the database
     if (user.role !== role) {
       return new Response(
         JSON.stringify({ error: "Invalid role for this user" }),
@@ -60,7 +52,6 @@ export async function POST(request) {
       );
     }
 
-    // Create JWT token
     const token = jwt.sign(
       {
         userId: user._id.toString(),
@@ -73,9 +64,6 @@ export async function POST(request) {
         expiresIn: "1h",
       }
     );
-
-    console.log("Token generated:", token);
-
     return new Response(JSON.stringify({ token }), {
       status: 200,
       headers: { "Content-Type": "application/json" },

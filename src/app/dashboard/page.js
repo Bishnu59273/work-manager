@@ -1,77 +1,59 @@
 "use client";
-import { useEffect, useState } from "react";
 import ProtectedRoute from "../components/ProtectedRoute"; // Ensure only authenticated users can access
-import { useRouter } from "next/navigation";
+import { useUser } from "../UserContext"; // Import the user context
+import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 export default function Dashboard() {
-  const [role, setRole] = useState("");
-
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    email: "",
-    role: "",
-  });
-
-  const router = useRouter();
+  const { userDetails, setUserDetails } = useUser(); // Get userDetails from context
 
   useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    const username = localStorage.getItem("username");
-    const email = localStorage.getItem("email");
-    const role = localStorage.getItem("role");
-    if (storedRole) {
-      setRole(storedRole);
-      setUserInfo({ username, email, role });
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUserDetails(decoded); // Update user context with decoded token
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
     } else {
-      router.push("/");
+      setUserDetails(null); // No token means no user
     }
-  }, [router]);
-
-  // const handleLogout = () => {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("username");
-  //   localStorage.removeItem("email");
-  //   localStorage.removeItem("role");
-  //   router.push("/");
-  // };
+  }, [setUserDetails]); // Only run on mount
 
   return (
-    <ProtectedRoute>
+    <ProtectedRoute requiredRole={userDetails?.role}>
+      {" "}
+      {/* Pass role correctly */}
       <div className="container text-center m-5">
-        <h1>User Dashboard</h1>
-        {role === "admin" && (
+        {userDetails?.role === "admin" && (
           <div>
             <h2>Admin Panel</h2>
             <p>Manage users, view reports, and access admin settings.</p>
-            <p>Your email: {userInfo.email}</p>
-            <p>Your role: {userInfo.role}</p>
-
-            {/* Additional admin components */}
+            <p>Your email: {userDetails.email}</p>
+            <p>Your role: {userDetails.role}</p>
           </div>
         )}
-        {role === "radiologist" && (
+
+        {userDetails?.role === "radiologist" && (
           <div>
             <h2>Radiologist Dashboard</h2>
             <p>View patient records, analyze images, and generate reports.</p>
-            <p>Your email: {userInfo.email}</p>
-            <p>Your role: {userInfo.role}</p>
-
-            {/* Additional radiologist components */}
+            <p>Your email: {userDetails.email}</p>
+            <p>Your role: {userDetails.role}</p>
           </div>
         )}
-        {role === "normal_user" && (
+
+        {userDetails?.role === "normal_user" && (
           <div>
             <h2>User Dashboard</h2>
             <p>
               Access your profile, view your history, and manage your settings.
             </p>
-            <p>Your email: {userInfo.email}</p>
-            <p>Your role: {userInfo.role}</p>
-
-            {/* Additional user components */}
+            <p>Your email: {userDetails.email}</p>
+            <p>Your role: {userDetails.role}</p>
           </div>
         )}
-        {!role && <p>Loading role information...</p>}
       </div>
     </ProtectedRoute>
   );
