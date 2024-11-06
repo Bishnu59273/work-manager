@@ -10,7 +10,7 @@ export default function NavBar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUserDetails(null); // Update context on logout
-    router.push("/login");
+    router.push("/");
   };
 
   return (
