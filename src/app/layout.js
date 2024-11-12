@@ -3,7 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AddBootstrap from "./AddBootstrap";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-import { UserProvider } from "./UserContext"; // Adjust path as necessary
+import { UserProvider } from "./UserContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
   title: "Work Manager",
@@ -16,6 +18,7 @@ export default function RootLayout({ children }) {
       <body>
         <UserProvider>
           <NavBar />
+          <ToastContainer />
           <AddBootstrap />
           {children}
           <Footer />

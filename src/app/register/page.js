@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const [username, setUsername] = useState("");
@@ -30,7 +31,8 @@ export default function Register() {
       }
 
       const result = await response.json();
-      setSuccess(`Successfully register with ID: ${result.insertedId}`);
+      toast.success(`Successfully registered, now you can login`);
+      // setSuccess(`Successfully register with ID: ${result.insertedId}`);
       setUsername("");
       setEmail("");
       setPassword("");

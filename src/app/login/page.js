@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const router = useRouter();
@@ -44,12 +45,14 @@ export default function Login() {
         const { token } = response.data;
         localStorage.setItem("token", token);
         router.push("/dashboard");
+        toast.success("Login Successfully");
       } else {
-        setError("Login failed: No token returned.");
+        toast.error("Login failed");
+        // setError("Login failed: No token returned.");
       }
     } catch (error) {
       console.error("Error logging in:", error.response?.data);
-      setError(error.response?.data?.error || "Login failed");
+      toast.error(error.response?.data?.error || "Login failed");
     }
   };
 
@@ -66,6 +69,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="form-control"
+              required
             />
           </div>
           <div className="col-md-12">
@@ -77,6 +81,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="form-control"
+              required
             />
           </div>
           <div className="col-md-12">

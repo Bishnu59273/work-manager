@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const UserForm = () => {
   const [name, setName] = useState("");
@@ -28,12 +29,12 @@ const UserForm = () => {
       }
 
       const result = await response.json();
-      setSuccess(`Message Sent`);
+      toast.success(`Message Sent`);
       setName("");
       setMessage("");
     } catch (err) {
       console.error("Error during message submission:", err);
-      setError(err.message);
+      toast.error(err.message);
     }
   };
 

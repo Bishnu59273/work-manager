@@ -8,9 +8,9 @@ async function Timeout() {
 export default async function Home() {
   // await Timeout();
   return (
-    <div className="container-fluid p-0">
-      <>
-        <section>
+    <section id="banner">
+      <div className="container-fluid p-0">
+        <>
           <div className="content">
             <div className="info">
               <p>
@@ -36,8 +36,8 @@ export default async function Home() {
             <li></li>
             <li></li>
           </ul>
-        </section>
-      </>
-    </div>
+        </>
+      </div>
+    </section>
   );
 }

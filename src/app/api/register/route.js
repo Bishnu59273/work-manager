@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { MongoClient, ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
+import { toast } from "react-toastify";
 
 const uri = process.env.MONGO_DB_URL;
 
@@ -54,10 +55,16 @@ export async function POST(request) {
     // Check if user already exists
     const existingUser = await db.collection("users").findOne({ email });
     if (existingUser) {
-      return new Response(JSON.stringify({ error: "User already exists" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify(
+          { error: "User already exists" },
+          toast.error("User already exists")
+        ),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
     }
 
     // Insert the new user

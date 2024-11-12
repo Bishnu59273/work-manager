@@ -19,7 +19,8 @@
     "nookies": "^2.5.2",
     "react": "^18",
     "react-dom": "^18",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "react-toastify": "^10.0.6"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.10",

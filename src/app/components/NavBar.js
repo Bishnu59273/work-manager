@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useUser } from "../UserContext";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function NavBar() {
   const router = useRouter();
@@ -11,6 +12,7 @@ export default function NavBar() {
     localStorage.removeItem("token");
     setUserDetails(null); // Update context on logout
     router.push("/");
+    toast.info("Logged Out");
   };
 
   return (
