@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import { UserProvider } from "./UserContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PreLoader from "./components/Preloader";
 
 export const metadata = {
   title: "Work Manager",
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <UserProvider>
+          <PreLoader />
           <NavBar />
           <ToastContainer />
           <AddBootstrap />
