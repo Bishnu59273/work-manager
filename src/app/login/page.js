@@ -45,7 +45,7 @@ export default function Login() {
         const { token } = response.data;
         localStorage.setItem("token", token);
         router.push("/dashboard");
-        toast.success("Login Successfully");
+        toast.success("Login Successfully", { className: "toast-message" });
       } else {
         toast.error("Login failed");
         // setError("Login failed: No token returned.");
@@ -57,7 +57,7 @@ export default function Login() {
   };
 
   return (
-    <div className="container d-flex justify-content-center">
+    <div className="container d-flex justify-content-center upper_margin">
       <div className="row">
         <form onSubmit={handleSubmit}>
           <div className="col-md-12">

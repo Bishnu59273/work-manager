@@ -7,6 +7,7 @@ import { UserProvider } from "./UserContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PreLoader from "./components/Preloader";
+import "@/plugins/custom_css/main.css";
 
 export const metadata = {
   title: "Work Manager",

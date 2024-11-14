@@ -34,7 +34,7 @@ const UserForm = () => {
       setMessage("");
     } catch (err) {
       console.error("Error during message submission:", err);
-      toast.error(err.message);
+      toast.error(err.message, { className: "toast-message" });
     }
   };
 

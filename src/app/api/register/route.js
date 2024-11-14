@@ -55,24 +55,24 @@ export async function POST(request) {
     // Check if user already exists
     const existingUser = await db.collection("users").findOne({ email });
     if (existingUser) {
-      return new Response(
-        JSON.stringify(
-          { error: "User already exists" },
-          toast.error("User already exists")
-        ),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      return new Response(JSON.stringify({ error: "User already exists" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // Insert the new user
     const result = await usersCollection.insertOne(newUser);
 
     return NextResponse.json(
-      { insertedId: result.insertedId },
-      { status: 201 }
+      JSON.stringify({
+        message: "Registered successfully",
+        insertedId: result.insertedId,
+      }),
+      {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      }
     );
   } catch (error) {
     console.error("Error occurred during POST:", error);

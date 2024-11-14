@@ -12,12 +12,18 @@ export async function GET(request) {
 
     const users = await usersCollection.find({}).toArray();
 
-    return new NextResponse(JSON.stringify(users), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return new Response(
+      JSON.stringify({
+        message: "AllUsers data retrieved successfully",
+        users,
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   } catch (error) {
     console.error("Failed to fetch user data:", error);
 

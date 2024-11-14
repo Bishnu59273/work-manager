@@ -31,20 +31,23 @@ export default function Register() {
       }
 
       const result = await response.json();
-      toast.success(`Successfully registered, now you can login`);
+      toast.success(`Successfully registered, now you can login`, {
+        className: "toast-message",
+      });
       // setSuccess(`Successfully register with ID: ${result.insertedId}`);
       setUsername("");
       setEmail("");
       setPassword("");
     } catch (err) {
       console.error("Error during form submission:", err);
+      toast.error(error.message);
       setError(err.message);
     }
   };
 
   return (
     <>
-      <div className="container text-center m-5 d-flex justify-content-center">
+      <div className="container text-center d-flex justify-content-center upper_margin">
         <form onSubmit={handleSubmit} className="w-50">
           <div className="row mb-3">
             <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">

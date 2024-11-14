@@ -13,8 +13,8 @@ async function connectToDatabase() {
 }
 
 export async function GET(request) {
-  const user = await authenticateToken(request, "radiologist");
-  if (!user) return; // Unauthorized response handled in authenticateToken
+  const user = await authenticateToken(request, "admin");
+  if (!user) return;
 
   try {
     const database = await connectToDatabase();

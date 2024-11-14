@@ -25,7 +25,7 @@ export default function Dashboard() {
     <ProtectedRoute requiredRole={userDetails?.role}>
       {" "}
       {/* Pass role correctly */}
-      <div className="container text-center m-5">
+      <div className="container text-center upper_margin">
         {userDetails?.role === "admin" && (
           <div>
             <h2>Admin Panel</h2>

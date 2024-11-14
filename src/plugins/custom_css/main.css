@@ -91,7 +91,7 @@
   text-transform: uppercase;
   letter-spacing: 10px;
   position: absolute;
-  top: calc(50% - 30px);
+  top: 30%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
@@ -101,7 +101,7 @@
   z-index: 9999;
 }
 .loading-text.isdone {
-  top: 50%;
+  top: 30%;
   opacity: 0;
   -webkit-transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
   -o-transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
@@ -112,3 +112,25 @@
 }
 
 /* ====================== [ End Preloader ] ====================== */
+
+.upper_margin {
+  margin-top: 8%;
+}
+
+.toast-message {
+  top: 55px;
+}
+
+/* ======[ Start Navbar] ====== */
+.navbar {
+  position: absolute;
+  width: 100%;
+  z-index: 99999;
+  backdrop-filter: blur(3px);
+  border-bottom: 0.5px solid gainsboro;
+  transition: top 0.3s;
+  top: 0;
+}
+.navbar.visible {
+  position: fixed;
+}

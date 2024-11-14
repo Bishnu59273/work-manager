@@ -13,7 +13,7 @@ async function connectToDatabase() {
 }
 
 export async function GET(request) {
-  const user = await authenticateToken(request, "radiologist");
+  const user = await authenticateToken(request, "users");
   if (!user) return; // Unauthorized response handled in authenticateToken
 
   try {
@@ -27,7 +27,7 @@ export async function GET(request) {
 
     return new Response(
       JSON.stringify({
-        message: "Radiologists data retrieved successfully",
+        message: "UserOnly data retrieved successfully",
         data: normal_user,
       }),
       {

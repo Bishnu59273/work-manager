@@ -3,20 +3,37 @@ import Link from "next/link";
 import { useUser } from "../UserContext";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 export default function NavBar() {
   const router = useRouter();
   const { userDetails, setUserDetails } = useUser();
+  const [scrolled, setScrolled] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUserDetails(null); // Update context on logout
     router.push("/");
-    toast.info("Logged Out");
+    toast.info("Logged Out", { className: "toast-message foo-bar" });
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <nav className="navbar navbar-expand-lg">
+    <nav className={`navbar navbar-expand-lg ${scrolled ? "visible" : ""}`}>
       <div className="container">
         <Link className="navbar-brand" href="/">
           WorkManager
