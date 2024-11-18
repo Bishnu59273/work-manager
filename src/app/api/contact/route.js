@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
-import { ConnectDB } from "@/helpers/db";
 import { MongoClient } from "mongodb";
 
-// ConnectDB();
 const uri = process.env.MONGO_DB_URL;
 const client = new MongoClient(uri);
 
@@ -19,10 +17,10 @@ export async function GET(request) {
       status: 200,
     });
   } catch (error) {
-    console.error("Failed to fetch user data:", error);
+    console.error("Failed to fetch contact data:", error);
 
     return new Response(
-      JSON.stringify({ error: "Failed to fetch user data" }),
+      JSON.stringify({ error: "Failed to fetch conatct data" }),
       {
         status: 500,
       }
@@ -39,22 +37,19 @@ export async function POST(request) {
     const db = client.db("work");
     const usersCollection = db.collection("contact");
 
-    const { name, message } = await request.json();
+    const { username, email, phone, message } = await request.json();
 
-    const newUser = {
-      // _id: nextId,
-      name,
+    const ContactMessage = {
+      username,
+      email,
+      phone,
       message,
-      createdAt: new Date(),
+      SendAt: new Date(),
     };
 
-    // Insert the new user
-    const result = await usersCollection.insertOne(newUser);
+    const result = await usersCollection.insertOne(ContactMessage);
 
-    return NextResponse.json(
-      { insertedId: result.insertedId },
-      { status: 201 }
-    );
+    return NextResponse.json({ status: 201 });
   } catch (error) {
     console.error("Error occurred during POST:", error);
     return NextResponse.json(
