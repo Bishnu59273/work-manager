@@ -113,16 +113,15 @@ const UserForm = () => {
 
             <div className="info">
               <div className="information">
-                {/* <i className="fas fa-map-marker-alt"></i> &nbsp &nbsp */}
-                <i className="bi bi-geo-fill"></i>
+                <i className="bi bi-geo-alt"></i>
                 <p>92 Cherry Drive Uniondale, NY 11553</p>
               </div>
               <div className="information">
-                {/* <i className="fas fa-envelope"></i> &nbsp &nbsp */}
+                <i className="bi bi-envelope"></i>
                 <p>lorem@ipsum.com</p>
               </div>
               <div className="information">
-                {/* <i className="fas fa-phone"></i>&nbsp&nbsp */}
+                <i className="bi bi-telephone"></i>
                 <p>123-456-789</p>
               </div>
             </div>
@@ -130,17 +129,17 @@ const UserForm = () => {
             <div className="social-media">
               <p>Connect with us :</p>
               <div className="social-icons">
-                <a href="#">
+                <a href="javascript:void(0)">
                   <i className="bi bi-facebook"></i>
                 </a>
-                <a href="#">
-                  <i className="fab fa-twitter"></i>
+                <a href="javascript:void(0)">
+                  <i className="bi bi-twitter-x"></i>
                 </a>
-                <a href="#">
-                  <i className="fab fa-instagram"></i>
+                <a href="javascript:void(0)">
+                  <i className="bi bi-instagram"></i>
                 </a>
-                <a href="#">
-                  <i className="fab fa-linkedin-in"></i>
+                <a href="javascript:void(0)">
+                  <i className="bi bi-linkedin"></i>
                 </a>
               </div>
             </div>

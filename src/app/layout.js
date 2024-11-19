@@ -1,5 +1,6 @@
 // RootLayout.js
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import AddBootstrap from "./AddBootstrap";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";

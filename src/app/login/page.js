@@ -47,19 +47,22 @@ export default function Login() {
         router.push("/dashboard");
         toast.success("Login Successfully", { className: "toast-message" });
       } else {
-        toast.error("Login failed");
+        toast.error("Login failed", { className: "toast-message" });
         // setError("Login failed: No token returned.");
       }
     } catch (error) {
       console.error("Error logging in:", error.response?.data);
-      toast.error(error.response?.data?.error || "Login failed");
+      toast.error(error.response?.data?.error || "Login failed", {
+        className: "toast-message",
+      });
     }
   };
 
   return (
     <div className="container d-flex justify-content-center upper_margin">
       <div className="row">
-        <form onSubmit={handleSubmit}>
+        <h1 className="login_h1">Login</h1>
+        <form className="login_form" onSubmit={handleSubmit}>
           <div className="col-md-12">
             <label htmlFor="inputEmail4" className="form-label">
               Email

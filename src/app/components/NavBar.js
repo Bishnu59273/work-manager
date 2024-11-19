@@ -74,6 +74,14 @@ export default function NavBar() {
                 <li className="nav-item">
                   <Link className="btn btn-primary btn-sm " href="/dashboard">
                     Profile
+                    {/* <img
+                      src={userDetails.image}
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "50%",
+                      }}
+                    /> */}
                   </Link>
                 </li>
                 <li className="nav-item">

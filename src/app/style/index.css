@@ -2,9 +2,7 @@
   width: 100%;
   justify-content: end;
 }
-label.col-sm-2.col-form-label.role {
-  padding-right: 0;
-}
+
 section {
   position: relative;
   display: flex;
