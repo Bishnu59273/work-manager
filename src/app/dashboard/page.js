@@ -4,6 +4,7 @@ import { useUser } from "../UserContext";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import ProfileImage from "../components/profileImage.js";
+import UpdateProfileForm from "../components/UpdateProfileForm";
 
 export default function Dashboard() {
   const { userDetails, setUserDetails } = useUser();
@@ -52,6 +53,7 @@ export default function Dashboard() {
             )} */}
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
+            <UpdateProfileForm />
           </div>
         )}
 
@@ -80,6 +82,7 @@ export default function Dashboard() {
             />
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
+            <UpdateProfileForm />
           </div>
         )}
       </div>
