@@ -3,6 +3,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import { useUser } from "../UserContext";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import ProfileImage from "../components/profileImage.js";
 
 export default function Dashboard() {
   const { userDetails, setUserDetails } = useUser();
@@ -29,15 +30,26 @@ export default function Dashboard() {
           <div>
             <h2>Admin Panel</h2>
             <p>Manage users, view reports, and access admin settings.</p>
-            {userDetails.image ? (
+            {/* ==== Method 1 for display image by using component ==== */}
+            <ProfileImage
+              image={userDetails.image}
+              username={userDetails.username}
+            />
+
+            {/* ==== Method 2 for display image ===== */}
+            {/* {userDetails.image ? (
               <img
                 src={userDetails.image}
                 alt={`${userDetails.username}'s profile`}
                 style={{ width: "150px", height: "150px", borderRadius: "50%" }}
               />
             ) : (
-              <p>No image available</p>
-            )}
+              <img
+                src=""
+                alt={`${userDetails.username}'s profile`}
+                style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+              />
+            )} */}
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
           </div>
@@ -47,15 +59,10 @@ export default function Dashboard() {
           <div>
             <h2>Radiologist Dashboard</h2>
             <p>View patient records, analyze images, and generate reports.</p>
-            {userDetails.image ? (
-              <img
-                src={userDetails.image}
-                alt={`${userDetails.username}'s profile`}
-                style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-              />
-            ) : (
-              <p>No image available</p>
-            )}
+            <ProfileImage
+              image={userDetails.image}
+              username={userDetails.username}
+            />
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
           </div>
@@ -67,15 +74,10 @@ export default function Dashboard() {
             <p>
               Access your profile, view your history, and manage your settings.
             </p>
-            {userDetails.image ? (
-              <img
-                src={userDetails.image}
-                alt={`${userDetails.username}'s profile`}
-                style={{ width: "150px", height: "150px", borderRadius: "50%" }}
-              />
-            ) : (
-              <p>No image available</p>
-            )}
+            <ProfileImage
+              image={userDetails.image}
+              username={userDetails.username}
+            />
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
           </div>

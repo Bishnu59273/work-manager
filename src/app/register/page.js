@@ -47,7 +47,8 @@ export default function Register() {
         setImage(null);
       };
     } catch (error) {
-      toast.error(`Registration failed: ${error.message} `, {
+      console.error(error.message);
+      toast.error(`Registration failed: please select profile image `, {
         className: "toast-message",
       });
     }
