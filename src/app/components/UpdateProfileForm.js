@@ -12,6 +12,7 @@ const UpdateProfileForm = () => {
   });
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
 
@@ -40,13 +41,16 @@ const UpdateProfileForm = () => {
 
     // Convert image to base64
     const reader = new FileReader();
-    reader.readAsDataURL(imageFile);
     reader.onloadend = () => {
+      setImagePreview(reader.result);
       setFormData((prev) => ({
         ...prev,
         image: reader.result,
       }));
     };
+    if (imageFile) {
+      reader.readAsDataURL(imageFile);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -75,8 +79,6 @@ const UpdateProfileForm = () => {
           },
         }
       );
-
-      console.log("respons form", response);
 
       if (response.data.message === "User details updated successfully") {
         toast.success("Profile updated successfully!", {
@@ -141,6 +143,20 @@ const UpdateProfileForm = () => {
             className="form-control"
           />
         </div>
+        {imagePreview && (
+          <div className="mt-3">
+            <img
+              src={imagePreview}
+              alt="Preview"
+              style={{
+                width: "150px",
+                height: "150px",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            />
+          </div>
+        )}
         <button
           type="submit"
           className="btn btn-primary m-3"
