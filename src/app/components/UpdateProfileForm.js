@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 const UpdateProfileForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    image: "",
+    image: "", // Store image as base64 string here
   });
 
   const [token, setToken] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fetch token and pre-fill user data when the component mounts
   useEffect(() => {
@@ -47,47 +50,87 @@ const UpdateProfileForm = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const imageFile = e.target.files[0]; // Get the selected image file
+    setSelectedImage(imageFile);
+
+    // Convert image to base64
+    const reader = new FileReader();
+    reader.readAsDataURL(imageFile);
+    reader.onloadend = () => {
+      setFormData((prev) => ({
+        ...prev,
+        image: reader.result, // Save the base64 string to formData
+      }));
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!token) {
-      alert("No token found. Please log in.");
+      toast.error("No token found. Please log in.", {
+        className: "toast-message",
+      });
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      const response = await axios.put("/api/users", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const response = await axios.put(
+        "/api/users",
+        {
+          username: formData.username,
+          email: formData.email,
+          image: formData.image, // Send the base64 image
         },
-      });
-      console.log("Response data:", response.data);
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("respons form", response);
+
       if (response.data.message === "User details updated successfully") {
-        alert("Profile updated successfully!");
+        toast.success("Profile updated successfully!", {
+          className: "toast-message",
+        });
       } else {
-        alert("Failed to update profile.");
+        toast.error("Failed to update profile.", {
+          className: "toast-message",
+        });
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      if (error.response) {
-        console.error("Response error:", error.response.data);
-        alert(error.response.data.error || "Failed to update profile.");
-      } else if (error.request) {
-        console.error("Request error:", error.request);
-        alert("No response from server.");
-      } else {
-        console.error("General error:", error.message);
-        alert("An error occurred while updating your profile.");
-      }
+      toast.error("Image size is big, Maximum size is 10MB", {
+        className: "toast-message",
+      });
+    } finally {
+      // Reset loading state after request is completed
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <h2>Update Profile</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="container d-flex justify-content-center">
+      <form onSubmit={handleSubmit} className="w-50">
+        <h2>Update Profile</h2>
         <div className="form-group">
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="form-control"
+              disabled
+            />
+          </div>
           <label htmlFor="username">Username</label>
           <input
             type="text"
@@ -100,30 +143,22 @@ const UpdateProfileForm = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="image">Profile Image</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="form-control"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="image">Profile Image URL</label>
-          <input
-            type="url"
+            type="file"
             id="image"
             name="image"
-            value={formData.image}
-            onChange={handleChange}
+            onChange={handleImageChange}
             className="form-control"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Update Profile
+        <button
+          type="submit"
+          className="btn btn-primary m-3"
+          disabled={isLoading} // Disable button while loading
+        >
+          {isLoading ? "Updating..." : "Update Profile"}{" "}
+          {/* Show loading text */}
         </button>
       </form>
     </div>

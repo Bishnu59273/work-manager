@@ -81,6 +81,7 @@ export default function Dashboard() {
               username={userDetails.username}
             />
             <p>Your email: {userDetails.email}</p>
+            <p>Your username: {userDetails.username}</p>
             <p>Your role: {userDetails.role}</p>
             <UpdateProfileForm />
           </div>
