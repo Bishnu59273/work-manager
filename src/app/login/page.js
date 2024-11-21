@@ -11,6 +11,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("normal_user");
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [isTokenChecked, setIsTokenChecked] = useState(false);
 
   useEffect(() => {
@@ -34,6 +35,8 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
     try {
       const response = await axios.post("/api/login", {
         email,
@@ -55,6 +58,8 @@ export default function Login() {
       toast.error(error.response?.data?.error || "Login failed", {
         className: "toast-message",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,8 +109,24 @@ export default function Login() {
             </select>
           </div>
           <div className="col-12 mt-2 text-center">
-            <button type="submit" className="btn btn-primary">
-              Login
+            <button
+              type="submit"
+              className="btn btn-primary m-3"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  {" "}
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>{" "}
+                  Login...
+                </>
+              ) : (
+                "Login"
+              )}{" "}
             </button>
           </div>
           {error && <p style={{ color: "red" }}>{error}</p>}
