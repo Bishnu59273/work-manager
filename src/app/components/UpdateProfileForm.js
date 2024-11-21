@@ -8,17 +8,15 @@ const UpdateProfileForm = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    image: "", // Store image as base64 string here
+    image: "",
   });
 
-  // const [token, setToken] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   // Fetch token and pre-fill user data when the component mounts
   useEffect(() => {
-    // Pre-fill form data with user details
     if (userDetails) {
       setFormData({
         username: userDetails.username,
@@ -37,7 +35,7 @@ const UpdateProfileForm = () => {
   };
 
   const handleImageChange = (e) => {
-    const imageFile = e.target.files[0]; // Get the selected image file
+    const imageFile = e.target.files[0];
     setSelectedImage(imageFile);
 
     // Convert image to base64
@@ -46,7 +44,7 @@ const UpdateProfileForm = () => {
     reader.onloadend = () => {
       setFormData((prev) => ({
         ...prev,
-        image: reader.result, // Save the base64 string to formData
+        image: reader.result,
       }));
     };
   };
@@ -69,7 +67,7 @@ const UpdateProfileForm = () => {
         {
           username: formData.username,
           email: formData.email,
-          image: formData.image, // Send the base64 image
+          image: formData.image,
         },
         {
           headers: {
@@ -102,15 +100,13 @@ const UpdateProfileForm = () => {
         className: "toast-message",
       });
     } finally {
-      // Reset loading state after request is completed
       setIsLoading(false);
     }
   };
 
   return (
     <div className="container d-flex justify-content-center">
-      <form onSubmit={handleSubmit} className="w-50">
-        <h2>Update Profile</h2>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -148,7 +144,7 @@ const UpdateProfileForm = () => {
         <button
           type="submit"
           className="btn btn-primary m-3"
-          disabled={isLoading} // Disable button while loading
+          disabled={isLoading}
         >
           {isLoading ? "Updating..." : "Update Profile"}{" "}
           {/* Show loading text */}

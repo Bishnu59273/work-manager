@@ -123,7 +123,7 @@ export async function PUT(request) {
         $set: {
           username: updatedData.username,
           email: updatedData.email,
-          image: imageUrl, // Save the Cloudinary image URL
+          image: imageUrl,
         },
       }
     );
