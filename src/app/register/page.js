@@ -9,11 +9,13 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("normal_user");
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       // Convert the image file to Base64
       const reader = new FileReader();
       reader.readAsDataURL(image);
@@ -34,6 +36,7 @@ export default function Register() {
 
         if (!response.ok) {
           const errorData = await response.json();
+          toast.error(errorData.error);
           throw new Error(errorData.error);
         }
 
@@ -51,6 +54,8 @@ export default function Register() {
       toast.error(`Registration failed: please select profile image `, {
         className: "toast-message",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -130,8 +135,24 @@ export default function Register() {
             />
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Register
+        <button
+          type="submit"
+          className="btn btn-primary m-3"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              {" "}
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>{" "}
+              Please wait...
+            </>
+          ) : (
+            "Register"
+          )}{" "}
         </button>
       </form>
     </div>

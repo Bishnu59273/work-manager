@@ -37,6 +37,31 @@ const UpdateProfileForm = () => {
 
   const handleImageChange = (e) => {
     const imageFile = e.target.files[0];
+
+    if (!imageFile) {
+      toast.error("Please select a valid image file.", {
+        className: "toast-message",
+      });
+      return;
+    }
+
+    // Validate file type
+    if (!imageFile.type.startsWith("image/")) {
+      toast.error("Only image files are allowed.", {
+        className: "toast-message",
+      });
+      return;
+    }
+
+    // Validate file size (10MB limit)
+    const maxSize = 10 * 1024 * 1024;
+    if (imageFile.size > maxSize) {
+      toast.error("Image size exceeds 10MB. Please select a smaller file.", {
+        className: "toast-message",
+      });
+      return;
+    }
+
     setSelectedImage(imageFile);
 
     // Convert image to base64
@@ -98,9 +123,6 @@ const UpdateProfileForm = () => {
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.error("Image size is big, Maximum size is 10MB", {
-        className: "toast-message",
-      });
     } finally {
       setIsLoading(false);
     }
