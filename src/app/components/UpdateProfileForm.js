@@ -1,46 +1,32 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { useUser } from "../UserContext";
 
 const UpdateProfileForm = () => {
+  const { userDetails, setUserDetails } = useUser();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     image: "", // Store image as base64 string here
   });
 
-  const [token, setToken] = useState(null);
+  // const [token, setToken] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   // Fetch token and pre-fill user data when the component mounts
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-
-      const decodedToken = jwtDecode(storedToken);
-      const userEmail = decodedToken.email;
-
-      // Fetch user details for pre-filling the form
-      axios
-        .get(`/api/users?email=${userEmail}`, {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        })
-        .then((response) => {
-          const user = response.data.user;
-          setFormData({
-            username: user.username || "",
-            email: user.email || "",
-            image: user.image || "",
-          });
-        })
-        .catch((error) => console.error("Error fetching user details:", error));
+    // Pre-fill form data with user details
+    if (userDetails) {
+      setFormData({
+        username: userDetails.username,
+        email: userDetails.email,
+        image: userDetails.image,
+      });
     }
-  }, []);
+  }, [userDetails]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,6 +83,13 @@ const UpdateProfileForm = () => {
       if (response.data.message === "User details updated successfully") {
         toast.success("Profile updated successfully!", {
           className: "toast-message",
+        });
+        // Update the userDetails in context after successful update
+        setUserDetails({
+          ...userDetails,
+          username: formData.username,
+          email: formData.email,
+          image: response.data.image || formData.image,
         });
       } else {
         toast.error("Failed to update profile.", {
