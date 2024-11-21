@@ -162,8 +162,19 @@ const UpdateProfileForm = () => {
           className="btn btn-primary m-3"
           disabled={isLoading}
         >
-          {isLoading ? "Updating..." : "Update Profile"}{" "}
-          {/* Show loading text */}
+          {isLoading ? (
+            <>
+              {" "}
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>{" "}
+              Updating...
+            </>
+          ) : (
+            "Update Profile"
+          )}{" "}
         </button>
       </form>
     </div>
