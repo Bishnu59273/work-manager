@@ -170,6 +170,12 @@ const UpdateProfileForm = () => {
             <img
               src={imagePreview}
               alt="Preview"
+              onError={(e) => {
+                toast.info("This image not supported in preview.", {
+                  className: "toast-message",
+                });
+                e.target.src = "/default_user.jpg";
+              }}
               style={{
                 width: "150px",
                 height: "150px",
@@ -177,6 +183,14 @@ const UpdateProfileForm = () => {
                 objectFit: "cover",
               }}
             />
+            <span
+              style={{
+                display: "block",
+                marginTop: "10px",
+              }}
+            >
+              This is the preview
+            </span>
           </div>
         )}
         <button
@@ -188,7 +202,7 @@ const UpdateProfileForm = () => {
             <>
               {" "}
               <span
-                class="spinner-border spinner-border-sm"
+                className="spinner-border spinner-border-sm"
                 role="status"
                 aria-hidden="true"
               ></span>{" "}
