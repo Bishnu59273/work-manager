@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode"; // Ensure this is imported
+import { jwtDecode } from "jwt-decode";
 
 export default function ProtectedRoute({ children, requiredRole }) {
   const router = useRouter();

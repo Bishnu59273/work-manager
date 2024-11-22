@@ -212,7 +212,7 @@ const UpdateProfileForm = () => {
               Updating...
             </>
           ) : (
-            "Update Profile"
+            "Update"
           )}{" "}
         </button>
       </form>

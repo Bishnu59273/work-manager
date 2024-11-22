@@ -32,7 +32,7 @@ export default function Dashboard() {
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
         >
-          Update
+          <i class="bi bi-pencil-square"></i> Update Profile
         </button>
       </div>
       <div

@@ -1,7 +1,10 @@
 export default function dashboardLoading() {
   return (
     <>
-      <div className="container text-center upper_margin">
+      <div className="upper_margin update">
+        <button className="btn btn-primary disable placeholder col-3"></button>
+      </div>
+      <div className="container text-center">
         <div>
           <h2 className="placeholder-glow">
             <span className="placeholder col-4"></span>
@@ -24,7 +27,6 @@ export default function dashboardLoading() {
           <p className="placeholder-glow">
             <span className="placeholder col-3"></span>
           </p>
-          <button className="btn btn-primary disable placeholder col-3"></button>
         </div>
       </div>
     </>
