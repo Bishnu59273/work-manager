@@ -25,8 +25,43 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute requiredRole={userDetails?.role}>
-      {" "}
-      <div className="container text-center upper_margin">
+      <div className="upper_margin update">
+        <button
+          type="button"
+          className="btn btn-primary btn-sm"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          Update
+        </button>
+      </div>
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog upper_margin">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
+                Update Profile
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <UpdateProfileForm />
+            </div>
+          </div>
+        </div>
+      </div>{" "}
+      <div className="container text-center">
         {userDetails?.role === "admin" && (
           <div>
             <h2>Admin Panel</h2>
@@ -51,43 +86,9 @@ export default function Dashboard() {
                 style={{ width: "150px", height: "150px", borderRadius: "50%" }}
               />
             )} */}
+            <p>Your Username: {userDetails.username}</p>
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Update
-            </button>
-
-            <div
-              className="modal fade"
-              id="exampleModal"
-              tabIndex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog upper_margin">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">
-                      Update Profile
-                    </h1>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div className="modal-body">
-                    <UpdateProfileForm />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         )}
 
@@ -101,41 +102,6 @@ export default function Dashboard() {
             />
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Update
-            </button>
-
-            <div
-              className="modal fade"
-              id="exampleModal"
-              tabIndex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog upper_margin">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">
-                      Update Profile
-                    </h1>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div className="modal-body">
-                    <UpdateProfileForm />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         )}
 
@@ -152,41 +118,6 @@ export default function Dashboard() {
             <p>Your email: {userDetails.email}</p>
             <p>Your username: {userDetails.username}</p>
             <p>Your role: {userDetails.role}</p>
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Update
-            </button>
-
-            <div
-              className="modal fade"
-              id="exampleModal"
-              tabIndex="-1"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog upper_margin">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h1 className="modal-title fs-5" id="exampleModalLabel">
-                      Update Profile
-                    </h1>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div className="modal-body">
-                    <UpdateProfileForm />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         )}
       </div>

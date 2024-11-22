@@ -113,14 +113,24 @@
 
 /* ====================== [ End Preloader ] ====================== */
 
-/* ===========[registration form text ]=========== */
+/* ========[Dashboard header Start]======== */
+
+.update {
+  display: flex;
+  justify-content: end;
+  margin-right: 120px;
+}
+
+/* ========[Dashboard header End]======== */
+
+/* ===========[registration form text Start]=========== */
 
 label.col-sm-2.col-form-label.role {
   padding-right: 0;
   padding-left: 0;
 }
 
-/* ===========[registration form text]============ */
+/* ===========[registration form text End]============ */
 
 .sign_h1 {
   padding-bottom: 15px;

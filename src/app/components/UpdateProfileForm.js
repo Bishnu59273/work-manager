@@ -129,8 +129,8 @@ const UpdateProfileForm = () => {
   };
 
   return (
-    <div className="container d-flex justify-content-center">
-      <form onSubmit={handleSubmit}>
+    <div className="container d-flex text-center">
+      <form onSubmit={handleSubmit} className="pt-0">
         <div className="form-group">
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -171,9 +171,12 @@ const UpdateProfileForm = () => {
               src={imagePreview}
               alt="Preview"
               onError={(e) => {
-                toast.info("This image not supported in preview.", {
-                  className: "toast-message",
-                });
+                toast.info(
+                  "This image not supported in preview.Choose another image",
+                  {
+                    className: "toast-message",
+                  }
+                );
                 e.target.src = "/default_user.jpg";
               }}
               style={{
@@ -189,7 +192,7 @@ const UpdateProfileForm = () => {
                 marginTop: "10px",
               }}
             >
-              This is the preview
+              Preview
             </span>
           </div>
         )}
