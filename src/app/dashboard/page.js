@@ -67,10 +67,7 @@ export default function Dashboard() {
             <h2>Admin Panel</h2>
             <p>Manage users, view reports, and access admin settings.</p>
             {/* ==== Method 1 for display image by using component ==== */}
-            <ProfileImage
-              image={userDetails.image}
-              username={userDetails.username}
-            />
+            <ProfileImage image={userDetails.image} />
 
             {/* ==== Method 2 for display image ===== */}
             {/* {userDetails.image ? (
@@ -96,10 +93,8 @@ export default function Dashboard() {
           <div>
             <h2>Radiologist Dashboard</h2>
             <p>View patient records, analyze images, and generate reports.</p>
-            <ProfileImage
-              image={userDetails.image}
-              username={userDetails.username}
-            />
+            <ProfileImage image={userDetails.image} />
+            <p>Your username: {userDetails.username}</p>
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
           </div>
@@ -111,10 +106,7 @@ export default function Dashboard() {
             <p>
               Access your profile, view your history, and manage your settings.
             </p>
-            <ProfileImage
-              image={userDetails.image}
-              username={userDetails.username}
-            />
+            <ProfileImage image={userDetails.image} />
             <p>Your email: {userDetails.email}</p>
             <p>Your username: {userDetails.username}</p>
             <p>Your role: {userDetails.role}</p>
