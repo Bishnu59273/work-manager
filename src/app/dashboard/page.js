@@ -8,6 +8,7 @@ import UpdateProfileForm from "../components/UpdateProfileForm";
 
 export default function Dashboard() {
   const { userDetails, setUserDetails } = useUser();
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -23,17 +24,66 @@ export default function Dashboard() {
     }
   }, [setUserDetails]);
 
+  // Fetch all users if the logged-in user is an admin
+  useEffect(() => {
+    if (userDetails?.role === "admin") {
+      const fetchUsers = async () => {
+        try {
+          const response = await fetch("/api/users");
+          if (response.ok) {
+            const data = await response.json();
+            setUsers(data.users);
+          } else {
+            console.error("Failed to fetch users");
+          }
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        }
+      };
+
+      fetchUsers();
+    }
+  }, [userDetails]);
+
   return (
     <ProtectedRoute requiredRole={userDetails?.role}>
-      <div className="upper_margin update">
-        <button
-          type="button"
-          className="btn btn-primary btn-sm"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          <i class="bi bi-pencil-square"></i> Update Profile
-        </button>
+      <div className="upper_margin update container">
+        <div>
+          {userDetails?.role === "admin" && (
+            <>
+              <ProfileImage image={userDetails.image} />
+            </>
+          )}
+          {userDetails?.role === "radiologist" && (
+            <ProfileImage image={userDetails.image} />
+          )}
+          {userDetails?.role === "normal_user" && (
+            <ProfileImage image={userDetails.image} />
+          )}
+        </div>
+        <div className="text-center">
+          {userDetails?.role === "admin" && (
+            <>
+              <h5>Admin Panel</h5>
+              <span>howdy, {userDetails.username}</span>
+            </>
+          )}
+          {userDetails?.role === "radiologist" && <h5>Radiologist Panel</h5>}
+          {userDetails?.role === "normal_user" && <h5>User Panel</h5>}
+        </div>
+        {/* <div>
+          <h6>howdy, {userDetails.username}</h6>
+        </div> */}
+        <div>
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            <i className="bi bi-pencil-square"></i> Update Profile
+          </button>
+        </div>
       </div>
       <div
         className="modal fade"
@@ -61,13 +111,14 @@ export default function Dashboard() {
           </div>
         </div>
       </div>{" "}
-      <div className="container text-center">
+      <div className="container">
         {userDetails?.role === "admin" && (
-          <div>
-            <h2>Admin Panel</h2>
-            <p>Manage users, view reports, and access admin settings.</p>
-            {/* ==== Method 1 for display image by using component ==== */}
-            <ProfileImage image={userDetails.image} />
+          <div className="details">
+            <p className="text-center">
+              Manage users, view reports, and access admin settings.
+            </p>
+            {/* ==== Method 1 for display image using component ====
+            <ProfileImage image={userDetails.image} /> */}
 
             {/* ==== Method 2 for display image ===== */}
             {/* {userDetails.image ? (
@@ -83,17 +134,38 @@ export default function Dashboard() {
                 style={{ width: "150px", height: "150px", borderRadius: "50%" }}
               />
             )} */}
-            <p>Your Username: {userDetails.username}</p>
-            <p>Your email: {userDetails.email}</p>
-            <p>Your role: {userDetails.role}</p>
+
+            {/* Show all users */}
+            <h3 className="text-center">All Users</h3>
+            <table className="table text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  {/* <th>Status</th> */}
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td>{user.uniqueId}</td>
+                    <td>{user.username}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
+                    {/* <td>{user.active ? "Active" : "Inactive"}</td> */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
 
         {userDetails?.role === "radiologist" && (
           <div>
-            <h2>Radiologist Dashboard</h2>
             <p>View patient records, analyze images, and generate reports.</p>
-            <ProfileImage image={userDetails.image} />
+            {/* <ProfileImage image={userDetails.image} /> */}
             <p>Your username: {userDetails.username}</p>
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
@@ -102,11 +174,10 @@ export default function Dashboard() {
 
         {userDetails?.role === "normal_user" && (
           <div>
-            <h2>User Dashboard</h2>
             <p>
               Access your profile, view your history, and manage your settings.
             </p>
-            <ProfileImage image={userDetails.image} />
+            {/* <ProfileImage image={userDetails.image} /> */}
             <p>Your email: {userDetails.email}</p>
             <p>Your username: {userDetails.username}</p>
             <p>Your role: {userDetails.role}</p>

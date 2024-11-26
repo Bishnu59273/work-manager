@@ -113,15 +113,18 @@
 
 /* ====================== [ End Preloader ] ====================== */
 
-/* ========[Dashboard header Start]======== */
+/* ========[Dashboard Start]======== */
 
 .update {
   display: flex;
-  justify-content: end;
-  margin-right: 120px;
+  justify-content: space-between;
 }
 
-/* ========[Dashboard header End]======== */
+.details {
+  margin: 50px 0 0 0;
+}
+
+/* ========[Dashboard End]======== */
 
 /* ===========[registration form text Start]=========== */
 
@@ -164,7 +167,6 @@ form.login_form {
 }
 .navbar.visible {
   position: fixed;
-  /* background: linear-gradient(45deg, #7a7c7d, transparent); */
   background: #fafafa;
   border: none;
 }
