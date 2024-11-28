@@ -118,7 +118,7 @@ export default function Register() {
             >
               <option value="normal_user">Normal User</option>
               <option value="radiologist">Radiologist</option>
-              <option value="admin">Admin</option>
+              {/* <option value="admin">Admin</option> */}
             </select>
           </div>
         </div>

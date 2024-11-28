@@ -1,14 +1,16 @@
 "use client";
-import ProtectedRoute from "../components/ProtectedRoute";
-import { useUser } from "../UserContext";
+import ProtectedRoute from "../components/ProtectedRoute.js";
+import { useUser } from "../UserContext.js";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import ProfileImage from "../components/profileImage.js";
-import UpdateProfileForm from "../components/UpdateProfileForm";
+import UpdateProfileForm from "../components/UpdateProfileForm.js";
+import TableSkeleton from "../components/TableSkeleton.js";
 
 export default function Dashboard() {
   const { userDetails, setUserDetails } = useUser();
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -38,6 +40,8 @@ export default function Dashboard() {
           }
         } catch (error) {
           console.error("Error fetching users:", error);
+        } finally {
+          setLoading(false);
         }
       };
 
@@ -68,8 +72,18 @@ export default function Dashboard() {
               <span>howdy, {userDetails.username}</span>
             </>
           )}
-          {userDetails?.role === "radiologist" && <h5>Radiologist Panel</h5>}
-          {userDetails?.role === "normal_user" && <h5>User Panel</h5>}
+          {userDetails?.role === "radiologist" && (
+            <>
+              <h5>Radiologist Panel</h5>
+              <span>howdy, {userDetails.username}</span>
+            </>
+          )}
+          {userDetails?.role === "normal_user" && (
+            <>
+              <h5>User Panel</h5>
+              <span>howdy, {userDetails.username}</span>
+            </>
+          )}
         </div>
         {/* <div>
           <h6>howdy, {userDetails.username}</h6>
@@ -114,14 +128,13 @@ export default function Dashboard() {
       <div className="container">
         {userDetails?.role === "admin" && (
           <div className="details">
-            <p className="text-center">
-              Manage users, view reports, and access admin settings.
-            </p>
-            {/* ==== Method 1 for display image using component ====
+            <div className="text-center">
+              <p>Manage users, view reports, and access admin settings.</p>
+              {/* ==== Method 1 for display image using component ====
             <ProfileImage image={userDetails.image} /> */}
 
-            {/* ==== Method 2 for display image ===== */}
-            {/* {userDetails.image ? (
+              {/* ==== Method 2 for display image ===== */}
+              {/* {userDetails.image ? (
               <img
                 src={userDetails.image}
                 alt={`${userDetails.username}'s profile`}
@@ -135,35 +148,40 @@ export default function Dashboard() {
               />
             )} */}
 
-            {/* Show all users */}
-            <h3 className="text-center">All Users</h3>
-            <table className="table text-center">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Username</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  {/* <th>Status</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user._id}>
-                    <td>{user.uniqueId}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                    {/* <td>{user.active ? "Active" : "Inactive"}</td> */}
+              {/* Show all users */}
+              <h3>All Users</h3>
+            </div>
+            {loading ? (
+              <TableSkeleton />
+            ) : (
+              <table className="table text-center border-1">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    {/* <th>Status</th> */}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user._id}>
+                      <td>{user.uniqueId}</td>
+                      <td>{user.username}</td>
+                      <td>{user.email}</td>
+                      <td>{user.role}</td>
+                      {/* <td>{user.active ? "Active" : "Inactive"}</td> */}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         )}
 
         {userDetails?.role === "radiologist" && (
-          <div>
+          <div className="details">
             <p>View patient records, analyze images, and generate reports.</p>
             {/* <ProfileImage image={userDetails.image} /> */}
             <p>Your username: {userDetails.username}</p>
@@ -173,7 +191,7 @@ export default function Dashboard() {
         )}
 
         {userDetails?.role === "normal_user" && (
-          <div>
+          <div className="details">
             <p>
               Access your profile, view your history, and manage your settings.
             </p>

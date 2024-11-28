@@ -135,6 +135,8 @@ label.col-sm-2.col-form-label.role {
 
 /* ===========[registration form text End]============ */
 
+/* ====== [Extra Margin, Toast messsage] ====== */
+
 .sign_h1 {
   padding-bottom: 15px;
 }
@@ -171,7 +173,9 @@ form.login_form {
   border: none;
 }
 
-/* ---- contact form ---- */
+/* ====== [End Navbar] ====== */
+
+/* ====== [Contact form Start] ====== */
 .form {
   width: 100%;
   max-width: 820px;
@@ -537,3 +541,5 @@ textarea.input {
     padding: 0.45rem 1.2rem;
   }
 }
+
+/* ====== [Contact form End] ====== */
