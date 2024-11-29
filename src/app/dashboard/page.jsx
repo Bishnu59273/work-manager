@@ -11,6 +11,9 @@ export default function Dashboard() {
   const { userDetails, setUserDetails } = useUser();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1); // Current page state
+  const [totalPages, setTotalPages] = useState(1); // Total pages state
+  const [limit] = useState(10); // Number of users per page
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,15 +29,19 @@ export default function Dashboard() {
     }
   }, [setUserDetails]);
 
-  // Fetch all users if the logged-in user is an admin
+  // Fetch all users with pagination if the logged-in user is an admin
   useEffect(() => {
     if (userDetails?.role === "admin") {
       const fetchUsers = async () => {
+        setLoading(true);
         try {
-          const response = await fetch("/api/users");
+          const response = await fetch(
+            `/api/users?page=${currentPage}&limit=${limit}`
+          );
           if (response.ok) {
             const data = await response.json();
             setUsers(data.users);
+            setTotalPages(data.pagination.totalPages); // Update total pages
           } else {
             console.error("Failed to fetch users");
           }
@@ -47,47 +54,42 @@ export default function Dashboard() {
 
       fetchUsers();
     }
-  }, [userDetails]);
+  }, [userDetails, currentPage, limit]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
+  };
 
   return (
     <ProtectedRoute requiredRole={userDetails?.role}>
       <div className="upper_margin update container">
         <div>
-          {userDetails?.role === "admin" && (
-            <>
-              <ProfileImage image={userDetails.image} />
-            </>
-          )}
-          {userDetails?.role === "radiologist" && (
-            <ProfileImage image={userDetails.image} />
-          )}
-          {userDetails?.role === "normal_user" && (
-            <ProfileImage image={userDetails.image} />
-          )}
+          {["admin", "radiologist", "normal_user"].includes(
+            userDetails?.role
+          ) && <ProfileImage image={userDetails.image} />}
         </div>
         <div className="text-center">
           {userDetails?.role === "admin" && (
             <>
               <h5>Admin Panel</h5>
-              <span>howdy, {userDetails.username}</span>
+              <span>Howdy, {userDetails.username}</span>
             </>
           )}
           {userDetails?.role === "radiologist" && (
             <>
               <h5>Radiologist Panel</h5>
-              <span>howdy, {userDetails.username}</span>
+              <span>Howdy, {userDetails.username}</span>
             </>
           )}
           {userDetails?.role === "normal_user" && (
             <>
               <h5>User Panel</h5>
-              <span>howdy, {userDetails.username}</span>
+              <span>Howdy, {userDetails.username}</span>
             </>
           )}
         </div>
-        {/* <div>
-          <h6>howdy, {userDetails.username}</h6>
-        </div> */}
         <div>
           <button
             type="button"
@@ -124,12 +126,11 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-      </div>{" "}
+      </div>
       <div className="container">
         {userDetails?.role === "admin" && (
           <div className="details">
             <div className="text-center">
-              <p>Manage users, view reports, and access admin settings.</p>
               {/* ==== Method 1 for display image using component ====
             <ProfileImage image={userDetails.image} /> */}
 
@@ -147,55 +148,71 @@ export default function Dashboard() {
                 style={{ width: "150px", height: "150px", borderRadius: "50%" }}
               />
             )} */}
-
+              <p>Manage users, view reports, and access admin settings.</p>
               {/* Show all users */}
               <h3>All Users</h3>
             </div>
             {loading ? (
               <TableSkeleton />
             ) : (
-              <table className="table text-center border-1">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    {/* <th>Status</th> */}
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((user) => (
-                    <tr key={user._id}>
-                      <td>{user.uniqueId}</td>
-                      <td>{user.username}</td>
-                      <td>{user.email}</td>
-                      <td>{user.role}</td>
-                      {/* <td>{user.active ? "Active" : "Inactive"}</td> */}
+              <>
+                <table className="table text-center border-1">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Username</th>
+                      <th>Email</th>
+                      <th>Role</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user._id}>
+                        <td>{user.uniqueId}</td>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td>{user.role}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {/* Pagination Controls */}
+                <div className="pagination justify-content-end">
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  <span className="mx-2">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
+              </>
             )}
           </div>
         )}
-
         {userDetails?.role === "radiologist" && (
           <div className="details">
             <p>View patient records, analyze images, and generate reports.</p>
-            {/* <ProfileImage image={userDetails.image} /> */}
             <p>Your username: {userDetails.username}</p>
             <p>Your email: {userDetails.email}</p>
             <p>Your role: {userDetails.role}</p>
           </div>
         )}
-
         {userDetails?.role === "normal_user" && (
           <div className="details">
             <p>
               Access your profile, view your history, and manage your settings.
             </p>
-            {/* <ProfileImage image={userDetails.image} /> */}
             <p>Your email: {userDetails.email}</p>
             <p>Your username: {userDetails.username}</p>
             <p>Your role: {userDetails.role}</p>

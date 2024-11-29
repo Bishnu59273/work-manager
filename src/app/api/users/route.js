@@ -9,6 +9,16 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const email = searchParams.get("email"); // Get the email query parameter (if provided)
+    const page = parseInt(searchParams.get("page") || "1", 10); // Get the page query parameter (default to 1)
+    const limit = parseInt(searchParams.get("limit") || "10", 10); // Get the limit query parameter (default to 10)
+
+    // Validate pagination parameters
+    if (page < 1 || limit < 1) {
+      return new NextResponse(
+        JSON.stringify({ error: "Invalid pagination parameters" }),
+        { status: 400 }
+      );
+    }
 
     await client.connect();
     const database = client.db("work");
@@ -17,18 +27,44 @@ export async function GET(request) {
     let result;
 
     if (email) {
-      result = await usersCollection.findOne({ email });
+      // Fetch a single user by email
+      const user = await usersCollection.findOne({ email });
 
-      if (!result) {
+      if (!user) {
         return new NextResponse(JSON.stringify({ error: "User not found" }), {
           status: 404,
         });
       }
 
-      result = { message: "User data retrieved successfully", user: result };
+      result = { message: "User data retrieved successfully", user };
     } else {
-      const users = await usersCollection.find({}).toArray();
-      result = { message: "All users retrieved successfully", users };
+      // Pagination logic
+      const totalUsers = await usersCollection.countDocuments(); // Get total number of users
+      const totalPages = Math.ceil(totalUsers / limit); // Calculate total pages
+
+      if (page > totalPages) {
+        return new NextResponse(
+          JSON.stringify({ error: "Page number out of range" }),
+          { status: 400 }
+        );
+      }
+
+      const users = await usersCollection
+        .find({})
+        .skip((page - 1) * limit) // Skip documents for previous pages
+        .limit(limit) // Limit documents for the current page
+        .toArray();
+
+      result = {
+        message: "Users retrieved successfully",
+        pagination: {
+          totalUsers,
+          totalPages,
+          currentPage: page,
+          limit,
+        },
+        users,
+      };
     }
 
     return new NextResponse(JSON.stringify(result), {
