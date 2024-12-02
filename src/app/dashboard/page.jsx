@@ -65,12 +65,12 @@ export default function Dashboard() {
   return (
     <ProtectedRoute requiredRole={userDetails?.role}>
       <div className="upper_margin update container">
-        <div>
+        <div className="col-lg-2">
           {["admin", "radiologist", "normal_user"].includes(
             userDetails?.role
           ) && <ProfileImage image={userDetails.image} />}
         </div>
-        <div className="text-center">
+        <div className="text-center col-lg-8">
           {userDetails?.role === "admin" && (
             <>
               <h5>Admin Panel</h5>
@@ -90,14 +90,14 @@ export default function Dashboard() {
             </>
           )}
         </div>
-        <div>
+        <div className="col-lg-2 d-flex justify-content-end align-items-start">
           <button
             type="button"
             className="btn btn-primary btn-sm"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
-            <i className="bi bi-pencil-square"></i> Update Profile
+            <i className="bi bi-pencil-square"></i>
           </button>
         </div>
       </div>

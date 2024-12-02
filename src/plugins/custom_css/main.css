@@ -135,7 +135,7 @@ label.col-sm-2.col-form-label.role {
 
 /* ===========[registration form text End]============ */
 
-/* ====== [Extra Margin, Toast messsage] ====== */
+/* ====== [Extra Margin, Toast messsage, sign up and login] ====== */
 
 .sign_h1 {
   padding-bottom: 15px;
@@ -164,8 +164,9 @@ form.login_form {
   z-index: 99999;
   backdrop-filter: blur(3px);
   border-bottom: 0.5px solid gainsboro;
-  transition: top 0.3s;
+  transition: top 0.3s, background 0.3s, border 0.3s;
   top: 0;
+  background: transparent;
 }
 .navbar.visible {
   position: fixed;
