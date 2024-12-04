@@ -4,9 +4,11 @@ import "@/plugins/custom_css/main.css";
 
 export default function PreLoader() {
   useEffect(() => {
+    // Dynamically import Pace.js to start loading progress animation
     import("pace-js").then((Pace) => {
       Pace.start();
 
+      // Hide the preloader when the page finishes loading
       const preloader = document.getElementById("preloader");
       if (preloader) {
         preloader.classList.add("isdone");

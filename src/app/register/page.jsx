@@ -40,7 +40,7 @@ export default function Register() {
           throw new Error(errorData.error);
         }
 
-        toast.success("Successfully registered! You can now log in.", {
+        toast.success("Successfully registered!", {
           className: "toast-message",
         });
         setUsername("");
